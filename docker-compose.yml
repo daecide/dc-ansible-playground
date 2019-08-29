@@ -1,0 +1,38 @@
+version: '3'
+
+services: 
+  ansible:
+    image: daecide/ansible:ubuntu1804
+    tty: true
+    networks:
+      - ansible-playground
+    volumes:
+      - "./ansible:/ansible"
+      - "./.ssh/id_rsa:/root/.ssh/id_rsa"
+      - "./.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub"
+      - "./.ssh/known_hosts:/root/.ssh/known_hosts"
+  node01:
+    image: daecide/sshd:ubuntu1804
+    tty: true
+    networks:
+      - ansible-playground
+    environment:
+      - "SSH_USER=${SSH_USER}"
+      - "SSH_PASSWORD=${SSH_PASSWORD}"
+    volumes:
+      - "./.ssh/id_rsa.pub:/root/.ssh/authorized_keys"
+      - "./.ssh/id_rsa.pub:/home/${SSH_USER}/.ssh/authorized_keys"
+  node02:
+    image: daecide/sshd:ubuntu1804
+    tty: true
+    networks:
+      - ansible-playground
+    environment:
+      - "SSH_USER=${SSH_USER}"
+      - "SSH_PASSWORD=${SSH_PASSWORD}"
+    volumes:
+      - "./.ssh/id_rsa.pub:/root/.ssh/authorized_keys"
+      - "./.ssh/id_rsa.pub:/home/${SSH_USER}/.ssh/authorized_keys"
+
+networks:
+  ansible-playground:
