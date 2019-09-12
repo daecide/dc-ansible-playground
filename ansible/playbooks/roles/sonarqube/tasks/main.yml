@@ -1,0 +1,4 @@
+---
+
+- include: pre-requirement.yml
+- include: sonarqube.yml

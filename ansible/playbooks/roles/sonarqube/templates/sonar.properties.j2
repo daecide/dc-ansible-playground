@@ -1,0 +1,128 @@
+sonar.jdbc.username={{ db_username }}
+sonar.jdbc.password={{ db_password }}
+
+#----- Embedded Database (default)
+#sonar.embeddedDatabase.port=9092
+
+#----- Oracle 11g/12c/18c/19c
+#sonar.jdbc.url=jdbc:oracle:thin:@localhost:1521/XE
+
+#----- PostgreSQL 9.3 or greater
+sonar.jdbc.url=jdbc:postgresql://{{ db_host }}/{{ db_name }}
+
+#----- Microsoft SQLServer 2014/2016/2017 and SQL Azure
+#sonar.jdbc.url=jdbc:sqlserver://localhost;databaseName=sonar;integratedSecurity=true
+# Use the following connection string if you want to use SQL Auth while connecting to MS Sql Server.
+#sonar.jdbc.url=jdbc:sqlserver://localhost;databaseName=sonar
+
+#----- Connection pool settings
+#sonar.jdbc.maxActive=60
+
+# The maximum number of connections that can remain idle in the
+#sonar.jdbc.maxIdle=5
+
+# The minimum number of connections that can remain idle in the pool,
+#sonar.jdbc.minIdle=2
+
+# The maximum number of milliseconds that the pool will wait (when there
+#sonar.jdbc.maxWait=5000
+#sonar.jdbc.minEvictableIdleTimeMillis=600000
+#sonar.jdbc.timeBetweenEvictionRunsMillis=30000
+
+
+#--------------------------------------------------------------------------------------------------
+# WEB SERVER
+#sonar.web.javaOpts=-Xmx512m -Xms128m -XX:+HeapDumpOnOutOfMemoryError
+#sonar.web.javaAdditionalOpts=
+#sonar.web.host=0.0.0.0
+#sonar.web.context=
+#sonar.web.port=9000
+#sonar.web.http.maxThreads=50
+#sonar.web.http.minThreads=5
+#sonar.web.http.acceptCount=25
+#sonar.auth.jwtBase64Hs256Secret=
+#sonar.web.sessionTimeoutInMinutes=4320
+#sonar.web.systemPasscode=
+#sonar.web.sso.enable=false
+#sonar.web.sso.loginHeader=X-Forwarded-Login
+#sonar.web.sso.nameHeader=X-Forwarded-Name
+#sonar.web.sso.emailHeader=X-Forwarded-Email
+#sonar.web.sso.groupsHeader=X-Forwarded-Groups
+#sonar.web.sso.refreshIntervalInMinutes=5
+
+#--------------------------------------------------------------------------------------------------
+# LDAP CONFIGURATION
+# sonar.security.realm=LDAP
+# sonar.authenticator.downcase=true
+# ldap.url=ldap://localhost:10389
+# ldap.bindDn=cn=sonar,ou=users,o=mycompany
+# ldap.bindPassword=secret
+# ldap.authentication=simple
+# ldap.realm=example.org
+# ldap.contextFactoryClass=com.sun.jndi.ldap.LdapCtxFactory
+# ldap.StartTLS=true
+# ldap.followReferrals=false
+
+# USER MAPPING
+# ldap.user.baseDn=cn=users,dc=example,dc=org
+# ldap.user.request=(&(objectClass=user)(sAMAccountName={login}))
+# ldap.user.realNameAttribute=name
+# ldap.user.emailAttribute=email
+
+# GROUP MAPPING
+# ldap.group.baseDn=cn=groups,dc=example,dc=org
+# ldap.group.request=(&(objectClass=group)(member={dn}))
+# ldap.group.idAttribute=sAMAccountName
+
+
+#--------------------------------------------------------------------------------------------------
+# COMPUTE ENGINE
+#sonar.ce.javaOpts=-Xmx512m -Xms128m -XX:+HeapDumpOnOutOfMemoryError
+#sonar.ce.javaAdditionalOpts=
+
+#--------------------------------------------------------------------------------------------------
+# ELASTICSEARCH
+#sonar.search.javaOpts=-Xms512m -Xmx512m -XX:+HeapDumpOnOutOfMemoryError
+#sonar.search.javaAdditionalOpts=
+#sonar.search.port=9001
+#sonar.search.host=
+
+#--------------------------------------------------------------------------------------------------
+# UPDATE CENTER
+#sonar.updatecenter.activate=true
+#http.proxyHost=
+#http.proxyPort=
+#https.proxyHost=
+#https.proxyPort=
+#http.auth.ntlm.domain=
+#socksProxyHost=
+#socksProxyPort=
+#http.proxyUser=
+#http.proxyPassword=
+#http.nonProxyHosts=
+
+#--------------------------------------------------------------------------------------------------
+# LOGGING
+#sonar.log.level=INFO
+#sonar.log.level.app=INFO
+#sonar.log.level.web=INFO
+#sonar.log.level.ce=INFO
+#sonar.log.level.es=INFO
+#sonar.path.logs=logs
+#sonar.log.rollingPolicy=time:yyyy-MM-dd
+#sonar.log.maxFiles=7
+#sonar.web.accessLogs.enable=true
+#sonar.web.accessLogs.pattern=%i{X-Forwarded-For} %l %u [%t] "%r" %s %b "%i{Referer}" "%i{User-Agent}" "%reqAttribute{ID}"
+#sonar.web.accessLogs.pattern=%h %l %u [%t] "%r" %s %b "%i{Referer}" "%i{User-Agent}" "%reqAttribute{ID}"
+
+
+#--------------------------------------------------------------------------------------------------
+# OTHERS
+#sonar.notifications.delay=60
+#sonar.path.data=data
+#sonar.path.temp=temp
+#sonar.telemetry.enable=true
+
+#--------------------------------------------------------------------------------------------------
+# DEVELOPMENT - only for developers
+#sonar.search.httpPort=-1

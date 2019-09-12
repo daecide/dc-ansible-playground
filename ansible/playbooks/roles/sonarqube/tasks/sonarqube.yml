@@ -1,0 +1,93 @@
+---
+
+- name: Create downloads
+  file:
+    path: /downloads
+    state: directory
+- name: Download sonarqube
+  get_url:
+    url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.9.1.zip
+    dest: /downloads/
+    mode: '700'
+- name: Ensure group "sonarqube" exists
+  group:
+    name: sonarqube
+    state: present
+- name: Create user sonarqube
+  user:
+    name: sonarqube
+    password: sonarqube
+    groups:
+      - sudo
+      - sonarqube
+    state: present
+    shell: /bin/bash
+    system: no
+    createhome: yes
+    home: /home/sonarqube
+- name: Delete target
+  file:
+    path: /opt/sonarqube
+    state: absent
+- name: Delete extract temp folder if any
+  file:
+    path: /opt/sonarqube-7.9.1
+    state: absent
+- name: Unzip sonarqube
+  unarchive:
+    src: /downloads/sonarqube-7.9.1.zip
+    remote_src: yes
+    dest: /opt/
+    owner: sonarqube
+    group: sonarqube
+- name: Create folder
+  file:
+    path: /opt/sonarqube
+    state: directory
+    owner: sonarqube
+    group: sonarqube
+    recurse: yes
+- name: Rename folder
+  command: bash -c "cp -Rf /opt/sonarqube-7.9.1/* /opt/sonarqube"
+- name: Delete original folder
+  file:
+    path: /opt/sonarqube-7.9.1
+    state: absent
+- name: Copy sonar.properties
+  template:
+    src: sonar.properties.j2
+    dest: /opt/sonarqube/conf/sonar.properties
+- name: Copy sonar.sh
+  template:
+    src: sonar.sh.j2
+    dest: /opt/sonarqube/bin/linux-x86-64/sonar.sh
+- name: Create a symbolic link
+  file:
+    src: /opt/sonarqube/bin/linux-x86-64/sonar.sh
+    dest: /usr/bin/sonar
+    state: link
+- name: Copy init.d/sonar
+  copy:
+    src: sonar
+    dest: /etc/init.d/sonar
+    mode: '755'
+- name: Change permission
+  file:
+    path: /opt/sonarqube
+    owner: sonarqube
+    group: sonarqube
+    recurse: yes
+- name: Download community-branch-plugin
+  get_url:
+    url: https://github.com/mc1arke/sonarqube-community-branch-plugin/releases/download/1.1.1/sonarqube-community-branch-plugin-1.1.1.jar
+    dest: /downloads/
+    mode: '700'
+- name: Move to plugins
+  copy:
+    remote_src: yes
+    src: /downloads/sonarqube-community-branch-plugin-1.1.1.jar
+    dest: /opt/sonarqube/extensions/plugins/
+- name: Start sonarqube
+  service:
+    name: sonar
+    state: started

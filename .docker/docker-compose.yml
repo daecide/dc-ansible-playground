@@ -1,0 +1,51 @@
+version: '3'
+
+services: 
+  ansible:
+    image: daecide/ansible:ubuntu1804
+    tty: true
+    networks:
+      - ansible-playground
+    volumes:
+      - "${WORKSPACE_PATH}:/ansible"
+      - "${WORKSPACE_PATH}/.ssh/id_rsa:/root/.ssh/id_rsa"
+      - "${WORKSPACE_PATH}/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub"
+      - "${WORKSPACE_PATH}/.ssh/known_hosts:/root/.ssh/known_hosts"
+  node01:
+    image: daecide/sshd:ubuntu1804
+    tty: true
+    networks:
+      - ansible-playground
+    environment:
+      - "SSH_USER=${SSH_USER}"
+      - "SSH_PASSWORD=${SSH_PASSWORD}"
+    volumes:
+      - "${WORKSPACE_PATH}/.ssh/id_rsa.pub:/root/.ssh/authorized_keys"
+      - "${WORKSPACE_PATH}/.ssh/id_rsa.pub:/home/${SSH_USER}/.ssh/authorized_keys"
+    ports:
+      - "${SONARQUBE_PORT}:9000"
+  node02:
+    image: daecide/sshd:ubuntu1804
+    tty: true
+    networks:
+      - ansible-playground
+    environment:
+      - "SSH_USER=${SSH_USER}"
+      - "SSH_PASSWORD=${SSH_PASSWORD}"
+    volumes:
+      - "${WORKSPACE_PATH}/.ssh/id_rsa.pub:/root/.ssh/authorized_keys"
+      - "${WORKSPACE_PATH}/.ssh/id_rsa.pub:/home/${SSH_USER}/.ssh/authorized_keys"
+  postgres:
+    image: postgres:10
+    networks:
+      - ansible-playground
+    environment:
+      - "POSTGRES_USER=${DB_USER}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD}"
+      - "POSTGRES_DB=${DB_NAME}"
+    volumes:
+      - "./.ssh/id_rsa.pub:/root/.ssh/authorized_keys"
+      - "./.ssh/id_rsa.pub:/home/${SSH_USER}/.ssh/authorized_keys"
+
+networks:
+  ansible-playground:

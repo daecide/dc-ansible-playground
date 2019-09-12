@@ -1,6 +1,6 @@
 {
 	"name": "Ansible Playground",
-	"dockerComposeFile": "../docker-compose.yml",
+	"dockerComposeFile": "../.docker/docker-compose.yml",
 	"service": "ansible",
 	"workspaceFolder": "/ansible",
 	"extensions": [
