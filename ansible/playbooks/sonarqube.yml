@@ -1,0 +1,12 @@
+---
+- hosts: webservers
+  vars:
+    system_owner: 'sonarqube'
+    db_host: 'postgres'
+    db_name: 'sonarqube'
+    db_username: 'admin'
+    db_password: 'secret'
+  roles:
+  - sonarqube
+  environment:
+    SONAR_HOME: /opt/sonarqube
