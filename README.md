@@ -1,6 +1,9 @@
 # dc-ansible-playground
 Docker compose to learn ansible with minimum setup
 
+## Features
+- Sonarqube Playbooks
+
 ## Getting started
 - Duplicate env-example as .env
 - Run docker-compose up in root project with docker-compose file at .docker folder
